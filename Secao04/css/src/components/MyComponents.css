@@ -1,0 +1,9 @@
+p {
+    color: gold;
+    background-color: #000;
+}
+
+.my-comp-p {
+    color: white;
+    background-color: blue;
+}
