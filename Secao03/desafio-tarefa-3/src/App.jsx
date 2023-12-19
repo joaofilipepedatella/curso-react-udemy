@@ -91,6 +91,9 @@ function App() {
         <Container myValue="teste">
           <p>Este eh o conteudo do children</p>
         </Container>
+        <Container myValue="testing 2">
+          <p>testando outro children</p>
+        </Container>
 
         {/* executar funcao */}
         <ExecuteFunction myFunction={showMessage} />
