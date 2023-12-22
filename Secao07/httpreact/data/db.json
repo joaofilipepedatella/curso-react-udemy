@@ -49,6 +49,21 @@
       "name": "camisa ",
       "price": "12.0",
       "id": 10
+    },
+    {
+      "name": "mouse",
+      "price": "60",
+      "id": 11
+    },
+    {
+      "name": "esmalte",
+      "price": "5",
+      "id": 12
+    },
+    {
+      "name": "esmalte",
+      "price": "5",
+      "id": 13
     }
   ]
 }
