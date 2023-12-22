@@ -1,7 +1,6 @@
-
 import './App.css'
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 
 // 4 - custom hook
 
@@ -11,10 +10,10 @@ const url = "http://localhost:3000/products"
 
 function App() {
 
-  const [products, setProducts] = useState([])
+  //const [products, setProducts] = useState([])
 
   // 4 - custom hook
-  const { data: items, httpConfig, loading } = useFetch(url)
+  const { data: items, httpConfig, loading, error } = useFetch(url)
 
   const [name, setName] = useState("")
   const [price, setPrice] = useState("")
@@ -69,6 +68,12 @@ function App() {
 
   }
 
+  // 8 - Desafio
+
+  const handleRemove = (id) => {
+    httpConfig(id, "DELETE")
+  }
+
 
 
   return (
@@ -76,15 +81,21 @@ function App() {
       <h1>Lista de Produtos</h1>
       {/* 6 - loading */}
       {loading && <p>Carregando dados...</p>}
-      {!loading && (
+      {error && <p>{error}</p>}
+      {!error && (
         <ul>
-        {items && items.map((product) =>
-        (
-          <li key={product.id}>{product.name} - R$: {product.price} </li>
-        ))}
-      </ul>
+          {items && items.map((product) =>
+          (
+            <li key={product.id}>
+              {product.name} - R$: {product.price}
+              <button onClick={() => handleRemove(product.id)}>
+                Excluir
+              </button>
+            </li>
+          ))}
+        </ul>
       )}
-      
+
       <div className="add-product">
         <form onSubmit={handleSubmit}>
           <label>

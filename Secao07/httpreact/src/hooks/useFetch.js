@@ -16,8 +16,16 @@ export const useFetch = (url) => {
 
     const [loading, setLoading] = useState(false)
 
+    // 7 - tratando erros
+
+    const [error, setError] = useState(null)
+
+    // 8 - Desafio
+
+    const [itemId, setItemId] = useState(null)
+
     const httpConfig = (data, method) => {
-        if(method === "POST") {
+        if (method === "POST") {
             setConfig({
                 method: "POST",
                 headers: {
@@ -27,6 +35,17 @@ export const useFetch = (url) => {
             })
 
             setMethod(method)
+        } else if (method === "DELETE") {
+            setConfig({
+                method,
+                headers: {
+                    "content-type": "application/json"
+                },
+            })
+
+            setMethod(method)
+            setItemId(data)
+
         }
     }
 
@@ -38,11 +57,21 @@ export const useFetch = (url) => {
             // 6 - loading
             setLoading(true)
 
-            const res = await fetch(url)
+            try {
 
-            const json = await res.json()
+                const res = await fetch(url)
 
-            setData(json)
+                const json = await res.json()
+
+                setData(json)
+
+                setMethod(null)
+
+            } catch (error) {
+
+                setError("Houve algum erro ao carregar os dados!")
+
+            }
 
             setLoading(false)
         }
@@ -63,11 +92,23 @@ export const useFetch = (url) => {
                 const json = await res.json()
 
                 setCallFetch(json)
+
+            } else if(method === "DELETE") {
+                
+                const deleteUrl = `${url}/${itemId}`
+
+                const res = await fetch(deleteUrl, config)
+
+                const json = await res.json()
+
+                setCallFetch(json)
+
             }
+            
         }
 
         httpRequest()
-    }, [config, method, url])
+    }, [config, method, url, itemId])
 
-    return { data, httpConfig, loading }
-    }
+    return { data, httpConfig, loading, error }
+}
