@@ -13,6 +13,7 @@ const Home = () => {
   return (
     <div>
       <h1>Produtos</h1>
+      {loading && <p>Carregando...</p>}
       {error && <p>{error}</p>}
       <ul className="products">
         {items && items.map(item => (
