@@ -1,12 +1,9 @@
 /* 3 - Alterando o contexto */
 
-import { useContext } from "react";
-
-import { CounterContext } from "../context/CounterContext";
-
+import {useCounterContext} from "../hooks/useCounterContext"
 
 const ChangeCounter = () => {
-    const { counter, setCounter } = useContext(CounterContext)
+    const { counter, setCounter } = useCounterContext()
 
 
     return (
