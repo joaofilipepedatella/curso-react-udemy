@@ -58,13 +58,13 @@ const EditPost = () => {
     if (formError) return;
 
     const data = {
-        title,
-        image,
-        body,
-        tagsArray,
-        uid: user.uid,
-        createdBy: user.displayName,
-    }
+      title,
+      image,
+      body,
+      tagsArray,
+      uid: user.uid,
+      createdBy: user.displayName,
+    };
 
     updateDocument(id, data);
 
@@ -102,7 +102,11 @@ const EditPost = () => {
               />
             </label>
             <p className={styles.preview_title}>Preview da imagem atual:</p>
-            <img className={styles.image_preview} src={post.image} alt={post.title} />
+            <img
+              className={styles.image_preview}
+              src={post.image}
+              alt={post.title}
+            />
             <label>
               <span>Conteudo:</span>
               <textarea

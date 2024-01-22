@@ -1,51 +1,43 @@
 import { useState, useEffect } from "react";
 import { db } from "../firebase/config";
-import { 
-    doc, getDoc,
- } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 
 export const useFetchDocument = (docCollection, id) => {
-    const [document, setDocument] = useState(null)
-    const [error, setError] = useState(null)
-    const [loading, setLoading] = useState(null)
+  const [document, setDocument] = useState(null);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(null);
 
-    //deal with memory leak
+  //deal with memory leak
 
-    const [cancelled, setCancelled] = useState(false)
+  const [cancelled, setCancelled] = useState(false);
 
-    useEffect(() => {
+  useEffect(() => {
+    async function loadDocument() {
+      if (cancelled) {
+        return;
+      }
 
-        async function loadDocument() {
-            if (cancelled) { return }
+      setLoading(true);
 
-            setLoading(true)
+      try {
+        const docRef = await doc(db, docCollection, id);
+        const docSnap = await getDoc(docRef);
 
-            try {
+        setDocument(docSnap.data());
+        setLoading(false);
+      } catch (error) {
+        console.log(error);
+        setError(error.message);
+        setLoading(true);
+      }
+    }
 
-                const docRef = await doc(db, docCollection, id)
-                const docSnap = await getDoc(docRef)
+    loadDocument();
+  }, [docCollection, id, cancelled]);
 
-                setDocument(docSnap.data())
-                setLoading(false)
-                
-            } catch (error) {
+  useEffect(() => {
+    return () => setCancelled(true);
+  }, []);
 
-                console.log(error)
-                setError(error.message)
-                setLoading(true)
-                
-            }
-
-           
-
-        }
-
-        loadDocument()
-    }, [docCollection, id, cancelled])
-
-    useEffect(() => {
-        return () => setCancelled(true)
-    }, [])
-
-    return { document, loading, error }
-}
+  return { document, loading, error };
+};

@@ -20,12 +20,10 @@ const Search = () => {
       <div className="post-list">
         {posts && posts.length === 0 && (
           <div className={styles.noposts}>
-            
-              <p>Não foram encontrados posts a partir da sua busca...</p>
-              <Link to="/" className="btn btn-dark">
-                Voltar
-              </Link>
-            
+            <p>Não foram encontrados posts a partir da sua busca...</p>
+            <Link to="/" className="btn btn-dark">
+              Voltar
+            </Link>
           </div>
         )}
         {posts && posts.map((post) => <PostDetail key={post.id} post={post} />)}
