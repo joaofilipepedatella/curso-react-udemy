@@ -38,11 +38,9 @@ const register = async (req, res) => {
 
   //If user was created succefully, return token
   if (!newUser) {
-    res
-      .status(422)
-      .json({
-        errors: ["Houve um erro, por favor tente novamente mais tarde."],
-      });
+    res.status(422).json({
+      errors: ["Houve um erro, por favor tente novamente mais tarde."],
+    });
     return;
   }
 
@@ -52,6 +50,33 @@ const register = async (req, res) => {
   });
 };
 
+//Sign user in
+const login = async (req, res) => {
+  const { email, password } = req.body;
+
+  const user = await User.findOne({ email });
+
+  //Check if user exists
+  if (!user) {
+    res.status(404).json({ errors: ["Usuario nao encontrado!"] });
+    return;
+  }
+
+  //Check if password matches
+  if (!(await bcrypt.compare(password, user.password))) {
+    res.status(422).json({ errors: ["Senha invalida."] });
+    return;
+  }
+
+  //Return user with token
+  res.status(201).json({
+    _id: user._id,
+    profileImage: user.profileImage,
+    token: generateToken(user._id),
+  });
+};
+
 module.exports = {
   register,
+  login,
 };
