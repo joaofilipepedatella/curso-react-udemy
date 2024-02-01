@@ -18,11 +18,15 @@ app.use(cors({credentials: true, origin: "http://localhost:3000"}))
 //Upload directory
 app.use("/uploads", express.static(path.join(__dirname, "/uploads")))
 
-//DN connection
+//DB connection
 require("./config/db.js")
 
 
 //Routes
+app.get("/", (req,res) => {
+  res.send("API Working!")
+})
+
 const router = require("./routes/Router.js")
 
 app.use(router)
