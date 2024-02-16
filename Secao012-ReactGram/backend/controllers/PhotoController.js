@@ -38,7 +38,7 @@ const deletePhoto = async (req, res) => {
 
   const reqUser = req.user;
 
-  const photo = await Photo.findById(new mongoose.Types.ObjectId(id));
+  const photo = await Photo.findById(mongoose.Types.ObjectId(id));
 
   //Check if photo exists
   if (!photo) {
@@ -51,6 +51,7 @@ const deletePhoto = async (req, res) => {
     res.status(422).json({
       errors: ["Ocorreu um erro, por favor tente novamente mais tarde."],
     });
+    return;
   }
 
   await Photo.findByIdAndDelete(photo._id);
@@ -84,7 +85,7 @@ const getUserPhotos = async (req, res) => {
 const getPhotoById = async (req, res) => {
   const { id } = req.params;
 
-  const photo = await Photo.findById(new mongoose.Types.ObjectId(id));
+  const photo = await Photo.findById(mongoose.Types.ObjectId(id));
 
   //Check if photo exists
   if (!photo) {
@@ -99,6 +100,12 @@ const getPhotoById = async (req, res) => {
 const updatePhoto = async (req, res) => {
   const { id } = req.params;
   const { title } = req.body;
+
+  let image;
+
+  if (req.file) {
+    image = req.file.filename;
+  }
 
   const reqUser = req.user;
 
@@ -118,6 +125,10 @@ const updatePhoto = async (req, res) => {
 
   if (title) {
     photo.title = title;
+  }
+
+  if (image) {
+    photo.image = image;
   }
 
   await photo.save();
@@ -146,7 +157,7 @@ const likePhoto = async (req, res) => {
   //Put user id in likes array
   photo.likes.push(reqUser._id);
 
-  photo.save();
+  await photo.save();
 
   res
     .status(200)
