@@ -1,39 +1,41 @@
 import "./Auth.css";
 
-//Components
+// Components
 import { Link } from "react-router-dom";
 import Message from "../../components/Message";
 
-//Hooks
+// Hooks
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
-//Redux
+// Redux
 import { login, reset } from "../../slices/authSlice";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-  const {loading, error } = useSelector((state) => state.auth)
+  const { loading, error } = useSelector((state) => state.auth);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+
     const user = {
       email,
       password,
-    }
+    };
 
-    dispatch(login(user))
+    console.log(user);
+
+    dispatch(login(user));
   };
 
-  //Clean all auth states
+  // Clean all auth states
   useEffect(() => {
-    dispatch(reset())
-  }, [dispatch])
+    dispatch(reset());
+  }, [dispatch]);
 
   return (
     <div id="login">
@@ -44,20 +46,20 @@ const Login = () => {
           type="text"
           placeholder="E-mail"
           onChange={(e) => setEmail(e.target.value)}
-          value={email || ``}
+          value={email}
         />
         <input
           type="password"
           placeholder="Senha"
           onChange={(e) => setPassword(e.target.value)}
-          value={password || ``}
+          value={password}
         />
         {!loading && <input type="submit" value="Entrar" />}
-        {loading && <input type="submit" value="Aguarde..."/>}
+        {loading && <input type="submit" disabled value="Aguarde..." />}
         {error && <Message msg={error} type="error" />}
       </form>
       <p>
-        Não tem uma conta? <Link to="/register">Clique aqui.</Link>
+        Não tem uma conta? <Link to="/register">Clique aqui</Link>
       </p>
     </div>
   );

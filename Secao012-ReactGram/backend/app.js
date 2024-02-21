@@ -8,25 +8,25 @@ const port = process.env.PORT;
 
 const app = express();
 
-//Config JSON and form data response
+// Config JSON and form data response
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-//Solve Cors
+// Solve CORS
 app.use(cors({ credentials: true, origin: "http://localhost:5173" }));
 
-//Upload directory
+// Upload directory
 app.use("/uploads", express.static(path.join(__dirname, "/uploads")));
 
-//DB connection
+// db connection
 require("./config/db.js");
 
-//Test Route
+// test route
 app.get("/", (req, res) => {
   res.send("API Working!");
 });
 
-//Routes
+// routes
 const router = require("./routes/Router.js");
 
 app.use(router);
