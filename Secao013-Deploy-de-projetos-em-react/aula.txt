@@ -1,0 +1,1 @@
+Apenas foi ensinado como subir um projeto no GitHubPages e na Vercel.
